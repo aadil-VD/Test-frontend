@@ -18,7 +18,7 @@ function Footer() {
           <h4>Quick Links</h4>
           <nav className="footer-nav">
             <Link to="/">Home</Link>
-            <Link to="/about">Aboutssss</Link>
+            <Link to="/about">About</Link>
           </nav>
         </div>
 
