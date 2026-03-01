@@ -1,0 +1,1267 @@
+<div class="pdp-reviews-block ">
+  <!-- TrustBox widget - Micro Combo -->
+  <div class="desktop-only">
+    <div
+      class="trustpilot-widget"
+      data-locale="en-GB"
+      data-template-id="5419b6ffb0d04a076446a9af"
+      data-businessunit-id="6268475b6b4fb35e0ea2662b"
+      data-style-height="20px"
+      data-style-width="100%"
+      data-token="9a0e267a-f65b-4455-acее-d2f16d4fa101"
+    >
+      <a href="https://uk.trustpilot.com/review/sotogardens.com" target="_blank" rel="noopener">Trustpilot</a>
+    </div>
+  </div>
+  <div class="mobile-only">
+    <div
+      class="trustpilot-widget"
+      data-locale="en-GB"
+      data-template-id="5419b637fa0340045cd0c936"
+      data-businessunit-id="6268475b6b4fb35e0ea2662b"
+      data-style-height="20px"
+      data-style-width="100%"
+      data-token="bfbe6608-6a59-4c1d-af82-731fe1007ae8"
+    >
+      <a href="https://uk.trustpilot.com/review/sotogardens.com" target="_blank" rel="noopener">Trustpilot</a>
+    </div>
+  </div>
+</div>
+
+<div class="product-template js-product-template pdp-v2">
+  <div class="product-template__mobile-images d-lg-none">
+    <div class="owl-carousel js-product-mobile-images">
+      {%- for image in product.images -%}
+        <div class="mobile-image__item">
+          {% comment %}
+            <img
+              alt="{{ image | escape }}"
+              data-sizes="auto"
+              data-srcset="{{ image.src | img_url: '1040x1382', crop: 'center' }} 710w,
+              {{ image.src | img_url: '2080x2764', crop: 'center' }} 1420w"
+              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            class="lazyload" />
+          {% endcomment %}
+          <img
+            alt="{{ image | escape }}"
+            data-sizes="auto"
+            data-srcset="
+              {{ image.src | img_url: '1540x1540' }} 710w,
+              {{ image.src | img_url: '3080x3080' }} 1420w
+            "
+            src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            class="lazyload"
+          >
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <div class="product-template__images d-flex">
+          <div class="product-template__thumbnails">
+            {%- assign current_variant = product.selected_or_first_available_variant
+              | default: product.variants.first
+            -%}
+            {%- assign compare_at_price = current_variant.compare_at_price -%}
+            {%- assign price = current_variant.price -%}
+            <div class="js-slider-product-thumbnails">
+              {%- for image in product.images -%}
+                <div
+                  class="thumbnail__item js-thumbnail-item {% if forloop.index == 1 %} active{% endif %}"
+                  data-index="{{ forloop.index }}"
+                >
+                  <img
+                    alt="{{ image | escape }}"
+                    data-sizes="auto"
+                    data-srcset="
+                      {{ image.src | img_url: '165x220', crop: 'center' }} 110w,
+                      {{ image.src | img_url: '330x440', crop: 'center' }} 220w
+                    "
+                    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                    class="lazyload"
+                  >
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="product-template__main-images">
+            {%- for image in product.images -%}
+              <div
+                class="main-image__item js-main-image {% if forloop.index == 1 %} active{% endif %}"
+                data-index="{{ forloop.index }}"
+              >
+                {% comment %}
+                  <img
+                    alt="{{ image | escape }}"
+                    data-sizes="auto"
+                    data-srcset="{{ image.src | img_url: '1040x1382', crop: 'center' }} 710w,
+                    {{ image.src | img_url: '2080x2764', crop: 'center' }} 1420w"
+                    src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  class="lazyload" />
+                {% endcomment %}
+                <img
+                  alt="{{ image | escape }}"
+                  data-sizes="auto"
+                  data-srcset="
+                    {{ image.src | img_url: '1540x1540' }} 710w,
+                    {{ image.src | img_url: '3080x3080' }} 1420w
+                  "
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  class="lazyload"
+                >
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="product-template__right">
+          <h1 class="product-template__title">{{ product.title }}</h1>
+          {% if product.metafields.descriptors.subtitle %}
+            <p class="product-template__subtitle">{{ product.metafields.descriptors.subtitle }}</p>
+          {% endif %}
+          <div class="product-template__price">
+            {%- assign current_variant = product.selected_or_first_available_variant
+              | default: product.variants.first
+            -%}
+            {%- assign compare_at_price = current_variant.compare_at_price -%}
+            {%- assign price = current_variant.price -%}
+            {%- assign money_price = price | money -%}
+            {%- assign show_discount = false -%}
+            {%- assign is_herbs = false -%}
+            {%- for collection in product.collections -%}
+              {%- if collection.title == 'Herbs' -%}
+                {%- assign is_herbs = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- unless is_herbs -%}
+              {%- for collection in product.collections -%} 
+                {%- if collection.title == 'Borders' or collection.title == 'Outdoor Plants' or collection.title == '3/set Plant Combinations' or collection.title == '2/set Plant Combinations' or collection.title == 'Plant & Pot Combinations' -%}
+                  {%- assign show_discount = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
+            {%- if show_discount -%}
+              {%- assign discount_percentage = product.metafields.custom.discount_percentage | default: 25 -%}
+            {%- endif -%}
+            {% if discount_percentage != blank %}
+              {%- assign discount_display = discount_percentage | round: 2 -%}
+              {%- assign discount_check = discount_percentage | round -%}
+              {%- if discount_display == discount_check -%}
+                {%- assign discount_display = discount_check -%}
+              {%- endif -%}
+              {%- assign one_minus_discount = 100 | minus: discount_percentage -%}
+              {%- assign discounted_price = price | times: one_minus_discount | divided_by: 100 -%}
+              {%- assign display_price = discounted_price | money | remove: '.00' -%}
+              {%- assign formatted_money_price = money_price | remove: '.00' -%}
+              <span class="price__new">{{ display_price }}</span>
+              <span class="price__compare_price">{{ formatted_money_price }}</span>
+              <span class="price__discount-badge">{{ discount_display }}% OFF</span>
+            {% elsif compare_at_price > price %}
+              {%- assign display_price = money_price | remove: '.00' -%}
+              {%- assign formatted_compare_price = compare_at_price | money | remove: '.00' -%}
+              <span class="price__new">{{ display_price }}</span>
+              <span class="price__old">{{ formatted_compare_price }}</span>
+            {% else %}
+              {%- assign display_price = money_price | remove: '.00' -%}
+              <span class="price__new">{{ display_price }}</span>
+            {% endif %}
+          </div>
+          <span class="upsell__info-text" style="margin-top:1px;">
+            {% if product.tags contains 'indoor plants' %}
+              (Price varies by plant height)
+            {% elsif product.tags contains 'Borders' %}
+              (Price varies by border length)
+            {% else %}
+              {% if product.metafields.productinfo.info_under_price_status == 'true' %}
+            <div style="padding-top:8px;" class="product-template__price-info product-template__price product-template__price-text">{{ product.metafields.productinfo.info_under_price_text }}</div>
+          {% endif %}
+            {% endif %}
+          </span>
+          {% unless product.tags contains 'indoor plants' %}
+            {% if product.metafields.productinfo.good_to_know_status == 'true' %}
+              <div class="product-template__good-to-know">
+                {% comment %}
+                  <div class="good-to-know__title">{{ product.metafields.productinfo.good_to_know_title }}</div>
+                {% endcomment %}
+                <div class="good-to-know__items d-flex">
+                  {% for item in product.metafields.productinfo.good_item_status %}
+                    {% assign index = forloop.index | minus: 1 %}
+                    {% if product.metafields.productinfo.good_item_status[index] == 'true' %}
+                      <div class="good-to-know-item d-flex align-items-center">
+                        <div class="good-to-know-item__icon">
+                          {% comment %}
+                            {% if product.metafields.productinfo.good_icon_svg_code[index] != '' %}
+                            {{ product.metafields.productinfo.good_icon_svg_code[index] }}
+                            {% else %}
+                            <img src="{{ product.metafields.productinfo.good_item_icon_image[index] }}" alt="Icon" />
+                            {% endif %}
+                          {% endcomment %}
+
+                          {% if product.metafields.productinfo.good_icon_svg_code[index] != blank %}
+                            {{ product.metafields.productinfo.good_icon_svg_code[index] }}
+                          {% else %}
+                            <img src="{{ product.metafields.productinfo.good_item_icon_image[index] }}" alt="Icon">
+                          {% endif %}
+                        </div>
+                        <div class="good-to-know-item__title">
+                          {{ product.metafields.productinfo.good_item_title[index] }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% else %}
+              {%- comment -%} Icon logic for Borders collection based on product title {%- endcomment -%}
+              {%- assign is_borders_collection = false -%}
+              {%- for collection in product.collections -%}
+                {%- if collection.title == 'Borders' -%}
+                  {%- assign is_borders_collection = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if is_borders_collection -%}
+                {% assign border_icons = '' %}
+                {% assign border_titles = '' %}
+                
+                {% if product.title contains 'House' or product.title contains 'White' or product.title contains 'Classic' %}
+                  {% assign border_icons = 'easy_to_care' %}
+                  {% assign border_titles = 'Easy to care for' %}
+                  {% if product.title contains 'House' or product.title contains 'White' %}
+                    {% assign border_icons = border_icons | append: ',flowering,pollinator' %}
+                    {% assign border_titles = border_titles | append: ',Flowering,Pollinator' %}
+                  {% elsif product.title contains 'Classic' %}
+                    {% assign border_icons = border_icons | append: ',scented,flowering' %}
+                    {% assign border_titles = border_titles | append: ',Scented,Flowering' %}
+                  {% endif %}
+                {% elsif product.title contains 'Green' %}
+                  {% assign border_icons = 'easy_to_care,flowering,year_round' %}
+                  {% assign border_titles = 'Easy to care for,Flowering,Year round interest' %}
+                {% elsif product.title contains 'Pet' %}
+                  {% assign border_icons = 'leave_per_site,leave_per_site,easy_to_care' %}
+                  {% assign border_titles = 'Leave as per site,Leave as per site,Easy to care for' %}
+                {% elsif product.title contains 'Evergreen' %}
+                  {% assign border_icons = 'easy_to_care,year_round,evergreen' %}
+                  {% assign border_titles = 'Easy to care for,Year round interest,Evergreen' %}
+                {% endif %}
+                {% assign border_icons = border_icons | split: ',' %}
+                {% assign border_titles = border_titles | split: ',' %}
+                
+                {%- if border_icons.size > 0 -%}
+                  <div class="product-template__good-to-know">
+                    <div class="good-to-know__items d-flex">
+                      {%- for icon_type in border_icons -%}
+                        {%- assign icon_index = forloop.index | minus: 1 -%}
+                        <div class="good-to-know-item d-flex align-items-center">
+                          <div class="good-to-know-item__icon">
+                            {%- case icon_type -%}
+                              {%- when 'easy_to_care' -%}
+                                <img src="{{ 'icon-easy-to-care.png' | asset_url }}" alt="Easy to care for">
+                              {%- when 'flowering' -%}
+                                <img src="{{ 'icon-flowering.png' | asset_url }}" alt="Flowering">
+                              {%- when 'pollinator' -%}
+                                <img src="{{ 'icon-pollinator.png' | asset_url }}" alt="Pollinator">
+                              {%- when 'scented' -%}
+                                <img src="{{ 'icon-scented.png' | asset_url }}" alt="Scented">
+                              {%- when 'year_round' -%}
+                                <img src="{{ 'icon-year-round.png' | asset_url }}" alt="Year round interest">
+                              {%- when 'evergreen' -%}
+                                <img src="{{ 'icon-evergreen.png' | asset_url }}" alt="Evergreen">
+                              {%- when 'leave_per_site' -%}
+                                <img src="{{ 'icon-leave-per-site.png' | asset_url }}" alt="Leave as per site">
+                            {%- endcase -%}
+                          </div>
+                          <div class="good-to-know-item__title">
+                            {{ border_titles[icon_index] }}
+                          </div>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            {% endif %}
+          {% endunless %}
+          {% if product.tags contains 'indoor plants' %}
+            {% if product.metafields.productinfo.good_to_know_status == 'true' %}
+              <div class="product-template__good-to-know">
+                {% comment %}
+                  <div class="good-to-know__title">{{ product.metafields.productinfo.good_to_know_title }}</div>
+                {% endcomment %}
+                <div class="good-to-know__items d-flex">
+                  {% for item in product.metafields.productinfo.good_item_status %}
+                    {% assign index = forloop.index | minus: 1 %}
+                    {% if product.metafields.productinfo.good_item_status[index] == 'true' %}
+                      <div class="good-to-know-item d-flex align-items-center">
+                        <div class="good-to-know-item__icon">
+                          {% comment %}
+                            {% if product.metafields.productinfo.good_icon_svg_code[index] != '' %}
+                            {{ product.metafields.productinfo.good_icon_svg_code[index] }}
+                            {% else %}
+                            <img src="{{ product.metafields.productinfo.good_item_icon_image[index] }}" alt="Icon" />
+                            {% endif %}
+                          {% endcomment %}
+
+                          {% if product.metafields.productinfo.good_icon_svg_code[index] != blank %}
+                            {{ product.metafields.productinfo.good_icon_svg_code[index] }}
+                          {% else %}
+                            <img src="{{ product.metafields.productinfo.good_item_icon_image[index] }}" alt="Icon">
+                          {% endif %}
+                        </div>
+                        <div class="good-to-know-item__title">
+                          {{ product.metafields.productinfo.good_item_title[index] }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% else %}
+              {%- comment -%} Icon logic for Borders collection based on product title {%- endcomment -%}
+              {%- assign is_borders_collection = false -%}
+              {%- for collection in product.collections -%}
+                {%- if collection.title == 'Borders' -%}
+                  {%- assign is_borders_collection = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if is_borders_collection -%}
+                {% assign border_icons = '' %}
+                {% assign border_titles = '' %}
+                
+                {% if product.title contains 'House' or product.title contains 'White' or product.title contains 'Classic' %}
+              {% assign border_icons = 'easy_to_care' %}
+              {% assign border_titles = 'Easy to care for' %}
+              {% if product.title contains 'House' or product.title contains 'White' %}
+                {% assign border_icons = border_icons | append: ',flowering,pollinator' %}
+                {% assign border_titles = border_titles | append: ',Flowering,Pollinator' %}
+              {% elsif product.title contains 'Classic' %}
+                {% assign border_icons = border_icons | append: ',scented,flowering' %}
+                {% assign border_titles = border_titles | append: ',Scented,Flowering' %}
+              {% endif %}
+            {% elsif product.title contains 'Green' %}
+              {% assign border_icons = 'easy_to_care,flowering,year_round' %}
+              {% assign border_titles = 'Easy to care for,Flowering,Year round interest' %}
+            {% elsif product.title contains 'Pet' %}
+              {% assign border_icons = 'leave_per_site,leave_per_site,easy_to_care' %}
+              {% assign border_titles = 'Leave as per site,Leave as per site,Easy to care for' %}
+            {% elsif product.title contains 'Evergreen' %}
+              {% assign border_icons = 'easy_to_care,year_round,evergreen' %}
+              {% assign border_titles = 'Easy to care for,Year round interest,Evergreen' %}
+            {% endif %}
+            {% assign border_icons = border_icons | split: ',' %}
+            {% assign border_titles = border_titles | split: ',' %}
+            
+            {%- if border_icons.size > 0 -%}
+              <div class="product-template__good-to-know">
+                <div class="good-to-know__items d-flex">
+                  {%- for icon_type in border_icons -%}
+                    {%- assign icon_index = forloop.index | minus: 1 -%}
+                    <div class="good-to-know-item d-flex align-items-center">
+                      <div class="good-to-know-item__icon">
+                        {%- case icon_type -%}
+                          {%- when 'easy_to_care' -%}
+                            <img src="{{ 'icon-easy-to-care.png' | asset_url }}" alt="Easy to care for">
+                          {%- when 'flowering' -%}
+                            <img src="{{ 'icon-flowering.png' | asset_url }}" alt="Flowering">
+                          {%- when 'pollinator' -%}
+                            <img src="{{ 'icon-pollinator.png' | asset_url }}" alt="Pollinator">
+                          {%- when 'scented' -%}
+                            <img src="{{ 'icon-scented.png' | asset_url }}" alt="Scented">
+                          {%- when 'year_round' -%}
+                            <img src="{{ 'icon-year-round.png' | asset_url }}" alt="Year round interest">
+                          {%- when 'evergreen' -%}
+                            <img src="{{ 'icon-evergreen.png' | asset_url }}" alt="Evergreen">
+                          {%- when 'leave_per_site' -%}
+                            <img src="{{ 'icon-leave-per-site.png' | asset_url }}" alt="Leave as per site">
+                        {%- endcase -%}
+                      </div>
+                      <div class="good-to-know-item__title">
+                        {{ border_titles[icon_index] }}
+                      </div>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+                {%- endif -%}
+              {%- endif -%}
+            {% endif %}
+          {% endif %}
+          {% if product.metafields.productinfo.switcher_status == 'true' %}
+            <div class="product-template__options">
+              <div class="option__title">{{ product.metafields.productinfo.switcher_title }}</div>
+              <div class="option__active-value js-open-options" data-id="990">{{ product.title }}</div>
+              <div class="option__values js-option" data-id="990">
+                {% for item in product.metafields.productinfo.product_switcher %}
+                  {% assign index = forloop.index | minus: 1 %}
+                  {% assign get_product = product.metafields.productinfo.product_switcher[index] %}
+                  {% assign looked_products = all_products[get_product] %}
+                  <div class="option__value">
+                    <a href="{{ looked_products.url }}">{{ looked_products.title }}</a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% if product.metafields.custom.product_variants_info %}
+              <span class="pdp_varaint-info">{{ product.metafields.custom.product_variants_info }} </span>
+            {% endif %}
+          {% endif %}
+          <form id="product-form-{{ product.id }}" class="product-form">
+          {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+            {%- for option in product.options_with_values -%}
+              <div
+                class="product-template__options js-options"
+                data-id="{{ forloop.index }}"
+                data-option="option{{ forloop.index }}"
+              >
+                {% if product.tags contains 'indoor plants' %}
+                  <div class="option__title">{{ option.name }}</div>
+                  <div class="option__radio">
+                    {% for value in option.values %}
+                      {% assign variantFound = false %}
+                      {%- for variant in product.variants -%}
+                        {% if variant.title == value %}
+                          {% unless variant.available %}
+                            {% continue %}
+                          {% endunless %}
+                          {% assign variantFound = true %}
+                          <label>
+                            <input
+                              data-id="{{variant.id}}"
+                              type="radio"
+                              name="{{ option.name }}"
+                              value="{{ value }}"
+                              data-price="{{ variant.price }}"
+                              {% if option.selected_value == value %}
+                                checked
+                              {% endif %}
+                            >
+                            <span>{{ value }}</span>
+                          </label>
+                          {% break %}
+                        {% endif %}
+                      {%- endfor -%}
+                      {% if variantFound == false %}
+                        {%- for variant in product.variants -%}
+                          {% assign variantId = variant.id %}
+                        {%- endfor -%}
+                        <label>
+                          <input
+                            data-id="{{variantId}}"
+                            type="radio"
+                            name="{{option.name}}"
+                            value="{{ value }}"
+                            data-price="{{ variant.price }}"
+                            {% if option.selected_value == value %}
+                              checked
+                            {% endif %}
+                          >
+                          <span>{{ value }}</span>
+                        </label>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  {% if option.values.size > 1 %}
+                    <span class="upsell__info-text">Choose a size based on where you plan to place the plant</span>
+                  {% endif %}
+                {% else %}
+                  <div class="option__title">
+                    {{ 'products.product.select' | t }}
+                    {{ option.name }}
+                  </div>
+                  <div class="option__active-value js-open-options" data-id="{{ forloop.index }}">
+                    {%- for value in option.values -%}
+                      {% if option.selected_value == value %}
+                        {{ value }}
+                        {%- for variant in product.variants -%}
+                          {% if variant.title == value %}
+                            {% unless variant.available %}
+                              - {{ 'products.product.notify_me' | t }}
+                            {% endunless %}
+                          {% endif %}
+                        {%- endfor -%}
+                      {% endif %}
+                    {%- endfor -%}
+                  </div>
+                  <div class="option__values js-option" data-id="{{ forloop.index }}">
+                    {%- for value in option.values -%}
+                      <div class="option__value js-option-value" data-value="{{ value }}">
+                        {{ value }}
+                        {%- for variant in product.variants -%}
+                          {% if variant.title == value %}
+                            {% unless variant.available %}
+                              - {{ 'products.product.notify_me' | t }}
+                            {% endunless %}
+                          {% endif %}
+                        {%- endfor -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                {% endif %}
+              </div>
+            {%- endfor -%}
+            {% if product.tags contains 'Borders' %}
+              <span class="upsell__info-text">Choose a size based on where you plan to place the border</span>
+            {% endif %}
+          {% endunless %}
+
+          {% if product.tags contains 'indoor plants' -%}
+          {%- else %}
+            {% if product.metafields.productinfo.upsell_status == 'true' %}
+              <div class="product-teplate__upsell">
+                <div class="upsell__title">
+                  {{ product.metafields.productinfo.upsell_title }}
+                  <small style="font-style:italic">(Optional)</small>
+                </div>
+                <div class="upsell__carousel owl-carousel js-carousel-upsell-products">
+                  {% for item in product.metafields.productinfo.upsell_product %}
+                    {% assign index = forloop.index | minus: 1 %}
+                    {% assign get_variant = product.metafields.productinfo.upsell_variant[index] %}
+                    {% if get_variant != '' %}
+                      {% assign get_variant_details = get_variant | split: ':' %}
+                      {% for get_variant_detail in get_variant_details %}
+                        {% if forloop.index == 1 %}
+                          {% assign get_product = get_variant_detail %}
+                        {% else %}
+                          {%- assign current_variant = get_variant_detail | plus: 0 -%}
+                        {% endif %}
+                      {% endfor %}
+                      {% assign looked_products = all_products[get_product] %}
+                      {%- for variant in looked_products.variants -%}
+                        {% if variant.id == current_variant %}
+                          {% assign current_variant = variant %}
+                        {% endif %}
+                      {%- endfor -%}
+                      <div class="upsell__item">
+                        <div class="js-match-height-upsell-item position-relative">
+                          <input
+                            class="upsell-item-checkbox js-upsell-checkbox"
+                            type="checkbox"
+                            name="upsell_product[]"
+                            value="{{ current_variant.id }}"
+                            data-variant-id="{{ current_variant.id }}"
+                            data-price="{{ current_variant.price }}"
+                          >
+                          <span class="check-icon">
+                            <img
+                              src="{{ "CheckCircle.png" | asset_img_url }}"
+                              width="26"
+                              height="26"
+                              style="width:26px"
+                              alt="check-mark"
+                            >
+                          </span>
+                          <a href="javascript:void(0);" class="upsell-item__image">
+                            {% if current_variant.featured_image.src != '' %}
+                              <img
+                                alt="{{ looked_products.title }}"
+                                data-sizes="auto"
+                                data-srcset="{{ current_variant.featured_image.src | img_url: '250x250', crop: 'center' }} 250w"
+                                src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                class="lazyload"
+                              >
+                            {% else %}
+                              <img
+                                alt="{{ looked_products.title }}"
+                                data-sizes="auto"
+                                data-srcset="{{ looked_products.featured_image.src | img_url: '250x250', crop: 'center' }} 250w"
+                                src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                class="lazyload"
+                              >
+                            {% endif %}
+                          </a>
+                          <h5 class="upsell-item__product-title">
+                            <a href="{{ looked_products.url }}">{{ current_variant.title }}</a>
+                          </h5>
+                          <div class="upsell-item__price">{{ current_variant.price | money }}</div>
+                        </div>
+                      </div>
+                    {% else %}
+                      {% assign get_product = product.metafields.productinfo.upsell_product[index] %}
+                      {% assign looked_products = all_products[get_product] %}
+                      {%- assign current_variant = looked_products.selected_or_first_available_variant -%}
+                      {%- for variant in looked_products.variants -%}
+                        {%- if variant.available == true and variant.price < current_variant.price -%}
+                          {%- assign current_variant = variant -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      <div class="upsell__item">
+                        <form>
+                        <div class="js-match-height-upsell-item position-relative">
+                          <input
+                            class="upsell-item-checkbox js-upsell-checkbox"
+                            type="checkbox"
+                            name="upsell_product[]"
+                            value="{{ current_variant.id }}"
+                            data-variant-id="{{ current_variant.id }}"
+                            data-price="{{ current_variant.price }}"
+                          >
+                          <span class="check-icon">
+                            <img
+                              src="{{ "CheckCircle.png" | asset_img_url }}"
+                              width="26"
+                              height="26"
+                              style="width:26px"
+                              alt="check-mark"
+                            >
+                          </span>
+                          <a href="javascript:void(0);" class="upsell-item__image">
+                            <img
+                              alt="{{ looked_products.title }}"
+                              data-sizes="auto"
+                              data-srcset="{{ looked_products.featured_image.src | img_url: '250x250', crop: 'center' }} 250w"
+                              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                              class="lazyload"
+                            >
+                          </a>
+                          <h5 class="upsell-item__product-title">
+                            <a href="{{ looked_products.url }}">{{ looked_products.title }}</a>
+                          </h5>
+                          <div class="upsell-item__price">{{ current_variant.price | money }}</div>
+                        </div>
+                        </form>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <span class="upsell__info-text">Quantities for optional items can be adjusted in the cart.</span>
+              </div>
+            {% endif %}
+          {% endif %}
+          </form>
+
+          {% comment %} product checked {% endcomment %}
+          {% if product.tags contains 'indoor plants' %}
+            <div class="box__products__select" data-id="">
+              <h2>Selected Pot</h2>
+              <div class="box__products__select__flex">
+                <div class="image"></div>
+                <div class="info">
+                  <div class="top"></div>
+                  <div class="buttons">
+                    <a href="#" class="change">Change pot</a>
+                    <a href="#" class="remove">Remove pot</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% if product.variants.size >= 1 %}
+              <div class="box__prodcust__pop">
+                {% for var in product.variants %}
+                  {% assign product_handle = product.selected_or_first_available_variant %}
+                  {% assign cls = null %}
+                  {% if product_handle.id == var.id %}
+                    {% assign cls = 'active' %}
+                  {% endif %}
+
+                  <div class="box__prodcutst__actual box__prodcutst__actual--variant {{cls}}" data-id="{{var.id}}">
+
+                    <h3>ADD DECOROTIVE POT<small class="optional-text" style="font-style:italic">(Optional)</small></h3>
+                    <div class="product-teplate__upsell fixed--height">
+                      <form>
+                      <div
+                        class="upsell__carousel owl-carousel js-carousel-upsell-products js-carousel-deactivate"
+                        data-loop="1"
+                        data-item="3"
+                      >
+                      </form>
+                        <div class="upsell__item">
+                          <div class="js-match-height-upsell-item upsell__item--fixed--height">
+                            <div class="content position-relative">
+                              <input
+                                class="upsell-item-checkbox js-upsell-checkbox"
+                                type="radio"
+                                name="upsell_product[]"
+                                value=""
+                                data-variant-id=""
+                                data-price="{{ 0 }}"
+                                checked
+                              >
+                              <span class="check-icon">
+                                <img
+                                  src="{{ "CheckCircle.png" | asset_img_url }}"
+                                  width="26"
+                                  height="26"
+                                  style="width:26px"
+                                  alt="check-mark"
+                                >
+                              </span>
+                              <a
+                                href="javascript:void(0);"
+                                class="upsell-item__image"
+                                data-id=""
+                                data-image=""
+                              >
+                                <img
+                                  alt="No Decorative Pot"
+                                  src="{{ "emptyPot.jpg"  | asset_img_url : '250x250', crop: 'bottom' }}"
+                                  class="lazyload"
+                                >
+                              </a>
+                              <h5 class="upsell-item__product-title">
+                                <a href="javascript:void(0)">No Decorative Pot</a>
+                              </h5>
+                              <div class="upsell-item__price">£0.00</div>
+                            </div>
+                          </div>
+                        </div>
+                        {% for item in var.metafields.productinfo.item_variant %}
+                          {% assign index = forloop.index | minus: 1 %}
+                          {% assign img_custom = var.metafields.productinfo.item_image[index] %}
+                          {% assign pro = all_products[var.metafields.accentuate.item_product[index]] %}
+                          {% assign id_variant = item | split: ':' | last | split: ' ' | first | strip %}
+                          {% assign current_variant = null %}
+                          {% for var_product in pro.variants %}
+                            {% assign var_product_id = var_product.id %}
+                            {% assign id_variant_as_number = id_variant | plus: 0 %}
+                            {% if var_product_id == id_variant_as_number %}
+                              {% assign current_variant = var_product %}
+                              {% break %}
+                            {% endif %}
+                          {% endfor %}
+
+                          {% if current_variant %}
+                            <div class="upsell__item">
+                              <div class="js-match-height-upsell-item upsell__item--fixed--height">
+                                <div class="content position-relative">
+                                  <input
+                                    class="upsell-item-checkbox js-upsell-checkbox"
+                                    type="radio"
+                                    name="upsell_product[]"
+                                    value="{{ current_variant.id }}"
+                                    data-variant-id="{{ current_variant.id }}"
+                                    data-price="{{ current_variant.price }}"
+                                  >
+                                  <span class="check-icon">
+                                    <img
+                                      src="{{ "CheckCircle.png" | asset_img_url }}"
+                                      width="26"
+                                      height="26"
+                                      style="width:26px"
+                                      alt="check-mark"
+                                    >
+                                  </span>
+                                  <a
+                                    href="javascript:void(0);"
+                                    class="upsell-item__image"
+                                    data-id="{{current_variant.id}}"
+                                    data-image="{{img_custom}}"
+                                  >
+                                    {% if current_variant.featured_image.src != '' %}
+                                      <img
+                                        alt="{{ current_variant.title }}"
+                                        data-sizes="auto"
+                                        data-srcset="{{ current_variant.featured_image.src | img_url: '250x250', crop: 'bottom' }} 250w"
+                                        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                        class="lazyload"
+                                      >
+                                    {% else %}
+                                      <img
+                                        alt="{{ current_variant.title }}"
+                                        data-sizes="auto"
+                                        data-srcset="{{ looked_products.featured_image.src | img_url: '250x250', crop: 'bottom' }} 250w"
+                                        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                        class="lazyload"
+                                      >
+                                    {% endif %}
+                                  </a>
+                                  <h5 class="upsell-item__product-title">
+                                    <a href="#">{{ current_variant.title }}</a>
+                                  </h5>
+                                  <div class="upsell-item__price">{{ current_variant.price | money }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+
+                      <span class="upsell__info-text">Quantities for optional items can be adjusted in the cart.</span>
+                    </div>
+                  </div>
+                {% endfor %}
+
+                <div class="product-teplate__upsell hidden">
+                  <div class="upsell__carousel owl-carousel js-carousel-upsell-products" data-item="3">
+                    {% for item in product.metafields.productinfo.upsell_product %}
+                      {% assign index = forloop.index | minus: 1 %}
+                      {% assign get_variant = product.metafields.productinfo.upsell_variant[index] %}
+                      {% if get_variant != '' %}
+                        {% assign get_variant_details = get_variant | split: ':' %}
+                        {% for get_variant_detail in get_variant_details %}
+                          {% if forloop.index == 1 %}
+                            {% assign get_product = get_variant_detail %}
+                          {% else %}
+                            {%- assign current_variant = get_variant_detail | plus: 0 -%}
+                          {% endif %}
+                        {% endfor %}
+                        {% assign looked_products = all_products[get_product] %}
+                        {%- for variant in looked_products.variants -%}
+                          {% if variant.id == current_variant %}
+                            {% assign current_variant = variant %}
+                          {% endif %}
+                        {%- endfor -%}
+                        <div class="upsell__item">
+                          <div class="js-match-height-upsell-item position-relative">
+                            <input
+                              class="upsell-item-checkbox js-upsell-checkbox"
+                              type="checkbox"
+                              name="upsell_product[]"
+                              value="{{ current_variant.id }}"
+                              data-variant-id="{{ current_variant.id }}"
+                            >
+                            <span class="check-icon">
+                              <img
+                                src="{{ "CheckCircle.png" | asset_img_url }}"
+                                width="26"
+                                height="26"
+                                style="width:26px"
+                                alt="check-mark"
+                              >
+                            </span>
+                            <a
+                              href="javascript:void(0);"
+                              class="upsell-item__image "
+                              data-id="{{current_variant.id}}"
+                            >
+                              {% if current_variant.featured_image.src != '' %}
+                                <img
+                                  alt="{{ looked_products.title }}"
+                                  data-sizes="auto"
+                                  data-srcset="{{ current_variant.featured_image.src | img_url: '250x250', crop: 'bottom' }} 250w"
+                                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                  class="lazyload"
+                                >
+                              {% else %}
+                                <img
+                                  alt="{{ looked_products.title }}"
+                                  data-sizes="auto"
+                                  data-srcset="{{ looked_products.featured_image.src | img_url: '250x250', crop: 'bottom' }} 250w"
+                                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                  class="lazyload"
+                                >
+                              {% endif %}
+                            </a>
+                            <h5 class="upsell-item__product-title">
+                              <a href="{{ looked_products.url }}">{{ current_variant.title }}</a>
+                            </h5>
+                            <div class="upsell-item__price">{{ current_variant.price | money }}</div>
+                          </div>
+                        </div>
+                      {% else %}
+                        {% assign get_product = product.metafields.productinfo.upsell_product[index] %}
+                        {% assign looked_products = all_products[get_product] %}
+                        {%- assign current_variant = looked_products.selected_or_first_available_variant -%}
+                        {%- for variant in looked_products.variants -%}
+                          {%- if variant.available == true and variant.price < current_variant.price -%}
+                            {%- assign current_variant = variant -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                        <div class="upsell__item">
+                          <div class="js-match-height-upsell-item position-relative">
+                            <input
+                              class="upsell-item-checkbox js-upsell-checkbox"
+                              type="checkbox"
+                              name="upsell_product[]"
+                              value="{{ current_variant.id }}"
+                              data-variant-id="{{ current_variant.id }}"
+                            >
+                            <span class="check-icon">
+                              <img
+                                src="{{ "CheckCircle.png" | asset_img_url }}"
+                                width="26"
+                                height="26"
+                                style="width:26px"
+                                alt="check-mark"
+                              >
+                            </span>
+                            <a href="javascript:void(0);" class="upsell-item__image">
+                              <img
+                                alt="{{ looked_products.title }}"
+                                data-sizes="auto"
+                                data-srcset="{{ looked_products.featured_image.src | img_url: '250x250', crop: 'bottom' }} 250w"
+                                src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                class="lazyload"
+                              >
+                            </a>
+                            <h5 class="upsell-item__product-title">
+                              <a href="{{ looked_products.url }}">{{ looked_products.title }}</a>
+                            </h5>
+                            <div class="upsell-item__price">{{ current_variant.price | money }}</div>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <span class="upsell__info-text">Quantities for optional items can be adjusted in the cart.</span>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+
+          <div class="product-template__add-to-cart d-flex add-to-cart-wrapper">
+            <div class="add-to-cart__quantity">
+              <div class="form-group">
+                <a href="#" class="quantity_down js-quantity-down">-</a>
+                <input
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  readonly
+                >
+                <a href="#" class="quantity_up js-quantity-up">+</a>
+              </div>
+            </div>
+
+            <div class="add-to-cart__button">
+              {% if product.metafields.productinfo.required_enquiry_status == 'true' %}
+                <a
+                  href="/pages/contact"
+                  class="js-go-to-contact"
+                  data-message="{{ product.metafields.productinfo.required_message }}"
+                >
+                  {{- product.metafields.productinfo.enquiry_button_label -}}
+                </a>
+              {% else %}
+                <button
+                  type="submit"
+                  data-id=""
+                  data-upsell-variant-ids=""
+                  class="js-add-bundle-to-cart"
+                >
+                  ADD TO CART | <span class="price__new">{{ display_price }}</span>
+                </button>
+              {% endif %}
+              <span class="delivery-info-btn desktop-only">Free delivery over £75 · {% if show_discount %}Pre-order for delivery in the spring{%else%}Delivered in 3-7 working days{% endif %}</span>
+            </div>
+          </div>
+          <span class="delivery-info-btn mobile-only">Free delivery over £75 · {% if show_discount %}Pre-order for delivery in the spring{%else%}Delivered in 3-7 working days{% endif %}</span>
+          <div id="product-variants" class="d-none">
+            <select name="id" id="product-select">
+              {%- for variant in product.variants -%}
+                {%- if variant.available -%}
+                  <option
+                    {% if variant == product.selected_or_first_available_variant %}
+                      selected="selected"
+                    {% endif %}
+                    value="{{ variant.id }}"
+                    data-price="{{ variant.price }}"
+                  >
+                    {{- variant.title -}}
+                  </option>
+                {%- else -%}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t | escape }}
+                  </option>
+                {%- endif -%}
+              {%- endfor -%}
+            </select>
+          </div>
+
+          <div class="product-template__out-of-stock d-none">
+            <a href="#" class="js-notify-me">{{ 'products.product.notify_me_when' | t }}</a>
+          </div>
+
+          <div class="product-template__accordions">
+            <div class="accordion js-accordion">
+              <div class="accordion__title js-accordion-title">
+                {{ 'products.product.key_information' | t }}
+              </div>
+              <div class="accordion__content js-accordion-content" style="display:block;">
+                {{ product.description }}
+              </div>
+            </div>
+            {% if settings.product_tab_1_status == true %}
+              <div class="accordion js-accordion">
+                <div class="accordion__title js-accordion-title">
+                  {{- settings.product_tab_1_title -}}
+                </div>
+                <div class="accordion__content js-accordion-content">
+                  {{- settings.product_tab_1_description -}}
+                </div>
+              </div>
+            {% endif %}
+            {% if settings.product_tab_2_status == true %}
+              <div class="accordion js-accordion">
+                <div class="accordion__title js-accordion-title">
+                  {{- settings.product_tab_2_title -}}
+                </div>
+                <div class="accordion__content js-accordion-content">
+                  {{- settings.product_tab_2_description -}}
+                </div>
+              </div>
+            {% endif %}
+            {% if settings.product_tab_3_status == true %}
+              <div class="accordion js-accordion">
+                <div class="accordion__title js-accordion-title">
+                  {{- settings.product_tab_3_title -}}
+                </div>
+                <div class="accordion__content js-accordion-content">
+                  {{- settings.product_tab_3_description -}}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          <div class="product__share d-flex align-items-center">
+            <p class="share__title">{{ 'products.product.share' | t }}</p>
+            <div class="share">
+              <div class="sharethis-inline-share-buttons"></div>
+              <script
+                type="text/javascript"
+                src="//platform-api.sharethis.com/js/sharethis.js#property=5d5d2ce0c60153001277c219&product=inline-share-buttons"
+                async="async"
+              ></script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if product.tags contains 'indoor plants' %}
+  {% include 'product_pop_variants.liquid' %}
+{% endif %}
+
+{% comment %}
+  <div class="scroll-to-top">
+    <div class="container container--type-2">
+      <div class="scroll-to-top__container">
+        <a href="#" class="js-scroll-to-top">{{ 'products.product.add_to_bag' | t }}</a>
+      </div>
+    </div>
+  </div>
+{% endcomment %}
+
+{% comment %} Sticty Add to cart {% endcomment %}
+
+<div class="add-to-cart-button-fixed">
+  <div class="product-template__add-to-cart d-flex">
+    <div class="add-to-cart__quantity">
+      <div class="form-group">
+        <a href="#" class="quantity_down js-quantity-down">-</a>
+        <input
+          type="number"
+          name="quantity"
+          value="1"
+        >
+        <a href="#" class="quantity_up js-quantity-up">+</a>
+      </div>
+    </div>
+
+    <div class="add-to-cart__button">
+      {% if product.metafields.productinfo.required_enquiry_status == 'true' %}
+        <a
+          href="/pages/contact"
+          class="js-go-to-contact"
+          data-message="{{ product.metafields.productinfo.required_message }}"
+        >
+          {{- product.metafields.productinfo.enquiry_button_label -}}
+        </a>
+      {% else %}
+        <button
+          type="submit"
+          data-id=""
+          data-upsell-variant-ids=""
+          class="js-add-bundle-to-cart"
+        >
+          ADD TO CART | <span class="price__new">{{ display_price }}</span>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+  <span class="delivery-info-btn">Free delivery over £75 · {% if show_discount %}Pre-order for delivery in the spring{%else%}Delivered in 3-7 working days{% endif %}</span>
+</div>
+
+{%- unless product == empty -%}
+  <script type="application/json" id="ProductJson">
+    {{- product | json -}}
+  </script>
+  <script type="application/json" id="ProductDiscountData">
+    {%- assign show_discount_json = false -%}
+    {%- assign is_herbs_json = false -%}
+    {%- for collection in product.collections -%}
+      {%- if collection.title == 'Herbs' -%}
+        {%- assign is_herbs_json = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- unless is_herbs_json -%}
+      {%- for collection in product.collections -%}
+        {%- if collection.title == 'Borders' or collection.title == 'Outdoor Plants' or collection.title == '3/set Plant Combinations' or collection.title == '2/set Plant Combinations' or collection.title == 'Plant & Pot Combinations' -%}
+          {%- assign show_discount_json = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endunless -%}
+    {%- if show_discount_json -%}
+      {%- assign discount_percentage_json = product.metafields.custom.discount_percentage | default: 25 -%}
+    {%- endif -%}
+    {
+      "discount_percentage": {{ discount_percentage_json | default: 'null' }}
+    }
+  </script>
+{%- endunless -%}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ shop.url | append: product.url | json }},
+    {%- if product.featured_image -%}
+      {%- assign image_size = product.featured_image.width | append: 'x' -%} "image" : [{{ product.featured_image.src | img_url: image_size | prepend: "https:" | json }}],
+      {%- endif -%}
+      "description": {{ product.description | strip_html | json }},
+      {%- if current_variant.sku != blank -%}
+        "sku": {{ current_variant.sku | json }},
+        {%- endif -%}
+        "brand": {
+          "@type": "Thing",
+          "name": {{ product.vendor | json }}
+        },
+        "offers": [
+            {%- for variant in product.variants -%}
+            {
+                "@type": "Offer",
+                {%- if variant.sku != blank -%}
+                "sku": {{ variant.sku | json }},
+                {%- endif -%}
+                "availability": "http://schema.org/{% if product.available %} InStock{% else %}OutOfStock{% endif %}",
+                "price": {{ variant.price | divided_by: 100.00 | json }},
+                "priceCurrency": {{ cart.currency.iso_code | json }},
+                "url": {{ shop.url | append: variant.url | json }}
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const pdp = document.querySelector('.pdp-v2 .add-to-cart-wrapper');
+    const stickyBtn = document.querySelector('.add-to-cart-button-fixed');
+
+    if (!pdp || !stickyBtn) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+          // PDP left viewport from TOP
+          stickyBtn.classList.add('show');
+        } else {
+          stickyBtn.classList.remove('show');
+        }
+      },
+      {
+        root: null,
+        threshold: 0,
+      }
+    );
+    observer.observe(pdp);
+  });
+
+  {% comment %} $('.js-accordion-title').on('click', function () {
+    const $currentAccordion = $(this).closest('.js-accordion');
+
+    // Close all others
+    $('.js-accordion-content').not($currentAccordion.find('.js-accordion-content')).slideUp(300);
+
+    // Toggle current
+    $currentAccordion.find('.js-accordion-content').slideToggle(300);
+  }); {% endcomment %}
+
+  // Mark default-open accordion as active so minus icon shows
+  $(document).ready(function () {
+    $('.js-accordion').each(function () {
+      if ($(this).find('.js-accordion-content').is(':visible')) {
+        $(this).addClass('active');
+      }
+    });
+  });
+
+  // Update add to cart button price when upsell items are selected
+  function updateAddToCartPrice() {
+    var plantPrice = 0;
+    var upsellPrice = 0;
+    
+    // Get the main product price from the selected variant
+    var selectedVariantPrice = $('#product-select option:selected').data('price');
+    if (!selectedVariantPrice) {
+      // Fallback to getting price from the select value
+      var variantId = $('#product-select').val();
+      var productJson = $('#ProductJson').text();
+      if (productJson) {
+        try {
+          var product = JSON.parse(productJson);
+          var variant = product.variants.find(function(v) { return v.id == variantId; });
+          if (variant) {
+            plantPrice = variant.price;
+          }
+        } catch(e) {
+          console.error('Error parsing product JSON:', e);
+        }
+      }
+    } else {
+      plantPrice = selectedVariantPrice;
+    }
+    
+    // Apply discount if applicable
+    var discountData = document.getElementById('ProductDiscountData') ? JSON.parse(document.getElementById('ProductDiscountData').innerHTML) : null;
+    var discountPercentage = discountData && discountData.discount_percentage;
+    if (discountPercentage) {
+      var oneMinusDiscount = 100 - discountPercentage;
+      plantPrice = Math.round((plantPrice * oneMinusDiscount) / 100);
+    }
+    
+    // Get selected upsell items price
+    $('.js-upsell-checkbox:checked').each(function() {
+      var itemPrice = parseFloat($(this).attr('data-price')) || 0;
+      upsellPrice += itemPrice;
+    });
+    
+    var totalPrice = plantPrice + upsellPrice;
+    
+    // Format price
+    var formattedPrice = '£' + (totalPrice / 100).toFixed(2);
+    formattedPrice = formattedPrice.replace('.00', '');
+    
+    // Update all add to cart buttons
+    $('.js-add-bundle-to-cart .price__new').text(formattedPrice);
+  }
+  
+  // Listen for upsell checkbox changes
+  $(document).on('change', '.js-upsell-checkbox', function() {
+    updateAddToCartPrice();
+  });
+  
+  // Listen for variant changes
+  $(document).on('change', '#product-select', function() {
+    updateAddToCartPrice();
+  });
+  
+  // Listen for radio button changes (for plant height selection)
+  $(document).on('change', '.option__radio input[type="radio"]', function() {
+    updateAddToCartPrice();
+  });
+  
+  // Initial price update on page load
+  $(document).ready(function() {
+    updateAddToCartPrice();
+  });
+</script>
+{% schema %}
+{
+  "name": "Product Main 2",
+  "presets": [
+    {
+      "name": "Product Main 2",
+      "category": "Section"
+    }
+  ]
+}
+{% endschema %}

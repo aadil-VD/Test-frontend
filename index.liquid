@@ -1,0 +1,2096 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"
+></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
+
+{% assign first_scent_option = null %}
+{% for block in section.blocks %}
+  {% if block.type == 'scent_option' and first_scent_option == null %}
+    {% assign first_scent_option = block %}
+  {% endif %}
+{% endfor %}
+<div class="pdp-section" data-section-id="{{ section.id }}">
+  <div class="pdp-layout">
+    <div class="product-gallery">
+      <div class="buybox-media-wrapper">
+        <div class="swiper-container position-relative ">
+          <!-- Main Swiper -->
+          <div class="swiper swiper-main swiper-main-1">
+            <div class="swiper-wrapper">
+              {% for media in product.images %}
+                <div class="swiper-slide">
+                  {% if forloop.first %}
+                    <!-- Product Badge - Only on first slide -->
+                    {% assign variant_badge = product.selected_or_first_available_variant.metafields.custom.variant_badge %}
+                    {% if variant_badge != blank %}
+                      <div class="product-badge image-badge" style=" max-width:100px;">
+                        <img src="{{ variant_badge | image_url: width: 200 }}" alt="Product badge" width="110" height="110" >
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                  <img src="{{ media | image_url: width: 600, height: 600, crop: 'center' }}">
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Thumbnail Swiper -->
+          <div class="swiper swiper-thumbs swiper-thumbs-1">
+            <div class="swiper-wrapper" style="justify-content: center;">
+              {% for media in product.images %}
+                <div class="swiper-slide">
+                  <img src="{{ media | image_url: width: 100, height: 100, crop: 'center' }}">
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      ================================
+      RIGHT COLUMN - PRODUCT INFO
+      ================================
+    -->
+    <div class="product-info">
+      <h1 class="product-title">{{ product.title }}</h1>
+      <p class="product-subtitle">{{ product.metafields.custom.sub_text }}</p>
+
+      <div class="rating-row">
+        <span class="stars" style="max-width:100px;">
+          <img
+            class="star-icon"
+            src="{{ section.settings.star_icon | image_url: width: 100 }}"
+            alt="Rating stars"
+            width="70"
+            height="14"
+            loading="lazy"
+          >
+        </span>
+        <span class="rating-text">{{ section.settings.rating_value }} / 5 on</span>
+        {% if section.settings.review_platform_image != blank %}
+          <img
+            class="review-platform-image"
+            src="{{ section.settings.review_platform_image | image_url: width: 200 }}"
+            alt="Review platform"
+            style="width: {{ section.settings.review_platform_width }}px; height: {{ section.settings.review_platform_height }}px; padding: {{ section.settings.review_platform_padding }}px;"
+            loading="lazy"
+          >
+        {% endif %}
+      </div>
+
+      <p class="price" id="productPrice">
+        <span class="current-price">{{ product.price | money }}</span>
+        {% if product.compare_at_price > product.price %}
+        <del class="compare-price">{{ product.compare_at_price | money }}</del>
+        {% endif %}
+      </p>
+
+ {% if product.metafields.custom.product_desc != blank %}
+  <div class="whats-inside">
+    <h3>What's inside the box?</h3>
+    {{ product.metafields.custom.product_desc }}
+  </div>
+{% endif %}
+
+
+      {% if product.variants_count > 1 %}
+        <div class="scent-selection">
+          <h3>Choose Your Scent</h3>
+          {% for variant in product.variants %}
+            <div class="product-option">
+              <input
+                type="radio"
+                name="choose-variant"
+                class="choose-product-variant"
+                value="{{ variant.id }}"
+                id="{{ variant.title | handle }}"
+                data-variant="variant-{{ forloop.index }}"
+                data-price="{{ variant.price | money }}"
+                data-compare-price="{{ variant.compare_at_price | money }}"
+                data-has-compare="{% if variant.compare_at_price > variant.price %}true{% else %}false{% endif %}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+              >
+              <label class="choose-variant" for="{{ variant.title | handle }}">
+                <span class="check-mark"><i class="fa-light fa-circle-check" style="position: absolute;"></i></span>
+                <p class="variant-title-heading">{{ variant.title }}</p>
+                {% if variant.metafields.custom.variant_subheading %}
+                  <p class="variant-subtext">{{ variant.metafields.custom.variant_subheading }}</p>
+                {% endif %}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form
+        method="post"
+        action="/cart/add"
+        class="product-form"
+        id="productForm-{{ section.id }}"
+        enctype="multipart/form-data"
+      >
+        <input
+          type="hidden"
+          name="id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+          id="selectedProductVariant"
+        >
+        <button type="submit" class="cta-button">
+          <span class="loading-spinner"></span>
+         <span class="btn-text">{{ product.metafields.custom.text_name | default: product.title }}</span>
+        </button>
+      </form>
+
+      <p class="free-shipping">
+        <span class="shipping-icon">
+          {% if section.settings.shipping_icon != blank %}
+            <img
+              class="shipping-svg"
+              src="{{ section.settings.shipping_icon | image_url: width: 36 }}"
+              alt="Shipping icon"
+              width="18"
+              height="18"
+              loading="lazy"
+            >
+          {% else %}
+            <svg
+              class="shipping-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 8L18.74 2H5.26L3 8M21 8V21H3V8M21 8H3M12 8V2M6 12H6.01M12 12H12.01M18 12H18.01"/>
+            </svg>
+          {% endif %}
+        </span>
+        {{ section.settings.shipping_text }}
+      </p>
+
+      <div class="separator-horizontal"></div>
+
+      <div class="trust-badges">
+        {% for block in section.blocks %}
+          {% if block.type == 'trust_badge' %}
+            <div class="trust-badge" {{ block.shopify_attributes }}>
+              <div class="trust-badge-icon">
+                {% if block.settings.badge_icon != blank %}
+                  <img
+                    class="icon-svg"
+                    src="{{ block.settings.badge_icon | image_url: width: 56 }}"
+                    alt="{{ block.settings.badge_text_line1 }} {{ block.settings.badge_text_line2 }}"
+                    width="28"
+                    height="28"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke-width="1.5" stroke="currentColor" fill="none"/>
+                    <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                {% endif %}
+              </div>
+              <p>
+                {{ block.settings.badge_text_line1 -}}
+                <br>
+                {{ block.settings.badge_text_line2 }}
+              </p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="accordion">
+        {% assign accordion_index = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'accordion_item' and block.settings.accordion_title != blank %}
+            <div class="accordion-item{% if accordion_index == 0 %} active{% endif %}" {{ block.shopify_attributes }}>
+              <div class="accordion-header">
+                <h3>{{ block.settings.accordion_title }}</h3>
+                <span class="accordion-icon"></span>
+              </div>
+              <div class="accordion-content">
+                {{ block.settings.accordion_content }}
+              </div>
+            </div>
+            {% assign accordion_index = accordion_index | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .pdp-section,
+    .pdp-section * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+    }
+
+    .pdp-section {
+      font-family: 'Neue Montreal' !important;
+      background-color: {{ section.settings.background_color }};
+      color: #333;
+      line-height: .6;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: {{ section.settings.padding_top }}px {{ section.settings.padding_horizontal }}px {{ section.settings.padding_bottom }}px;
+    }
+
+    .pdp-section .pdp-layout {
+      display: grid;
+      grid-template-columns: 50% 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ================================
+       LEFT COLUMN - PRODUCT GALLERY
+       ================================ */
+    .pdp-section .product-gallery {
+          position: sticky;
+          top: 111px;
+    }
+
+    /* Product Badge */
+    .pdp-section .swiper-container {
+      position: relative;
+    }
+
+    .pdp-section .swiper-slide {
+      position: relative;
+    }
+
+    .pdp-section .product-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      background-color: transparent;
+      padding: 0;
+      display: none;
+    }
+
+    .pdp-section .product-badge.loaded {
+      display: block;
+    }
+
+    .pdp-section .product-badge img {
+      display: block;
+      max-width: 110px;
+      height: auto;
+      width: 110px;
+    }
+
+    .pdp-section .main-image {
+      width: 627px;
+      background-color: transparent;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-shadow: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pdp-section .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: none;
+    }
+
+    .product-option {
+      margin-bottom:12px;
+    }
+
+    .product-option .choose-variant{
+      border-radius:4px;
+      margin-bottom:8px;
+    }
+
+  .pdp-section .thumbnail-gallery {
+    display: flex;
+    gap: 8px;
+    border-color: #ffffff;
+    justify-content: center;
+    background: transparent;
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    max-width: 90%;
+    flex-wrap: nowrap;
+  }
+
+  .pdp-section .thumbnail {
+    width: calc((100% - 40px) / 6); /* 6 items with 5 gaps of 8px = 40px */
+    max-width: 110px;
+    min-width: 70px;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    flex-shrink: 1;
+  }
+
+  .pdp-section .thumbnail:hover {
+    border-color: rgba(74, 124, 111, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .pdp-section .thumbnail.active {
+    border-color: #ffffff;
+  }
+
+  .pdp-section .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.25s ease;
+  }
+
+  .pdp-section .thumbnail.active img {
+    filter: brightness(1.1);
+  }
+
+
+    /* ================================
+       RIGHT COLUMN - PRODUCT INFO
+       ================================ */
+
+
+  .pdp-section .product-title {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-size: 32px;
+    font-weight: 600; /* SemiBold */
+    font-style: normal;
+    color: #1B1B1B;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+    .pdp-section .product-subtitle {
+      font-size: 16px;
+      color: #000;
+      margin-bottom: 12px;
+    }
+
+    .pdp-section .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .pdp-section .stars {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 14px;
+    }
+
+    .pdp-section .stars .star-icon {
+      width: 90px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .pdp-section .stars .star-filled,
+    .pdp-section .stars .star-empty {
+      line-height: 1;
+    }
+
+    .pdp-section .rating-text {
+      font-size: 18px;
+      color: #1B1B1B;
+    }
+
+    .pdp-section .review-platform-image {
+      display: inline-block;
+      object-fit: contain;
+      vertical-align: middle;
+    }
+
+    .pdp-section .price {
+      font-size: 26px;
+      font-weight: 400;
+      color: #1b1b1b;
+      margin-bottom: 16px;
+              line-height:1.4;
+
+    }
+    .compare-price {
+      font-size: 28px;
+      color: #999;
+    }
+    .current-price {
+      font-size: 26px;
+      line-height:1.4;
+    }
+
+    .pdp-section .whats-inside {
+      margin-bottom: 24px;
+      font-family: 'Neue Montreal', Arial, sans-serif;
+
+    }
+
+    .pdp-section .whats-inside h3 {
+      font-family :'Neue Montreal' !important;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: #1B1B1B;
+    }
+
+    .pdp-section .whats-inside ul {
+      list-style: none;
+      padding-left: 8px;
+            color: #1B1B1B;
+
+    }
+
+    .pdp-section .whats-inside li {
+      font-size: 16px;
+      font-weight:500px
+      color: #1B1B1B;
+      margin-bottom: 10px;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .pdp-section .whats-inside li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: 1B1B1B;
+      font-weight: bold;
+    }
+
+    .pdp-section .whats-inside li strong {
+      font-weight: 500;
+      color: #1B1B1B;
+    }
+
+    /* Scent Selection */
+    .pdp-section .scent-selection {
+    margin-bottom: 24px;
+    font-family: 'Neue Montreal', sans-serif !important;
+    }
+
+    .pdp-section .scent-selection h3 {
+      font-family: 'Neue Montreal', sans-serif !important;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+      background-color: transparent;
+    }
+
+    .pdp-section .scent-option {
+      border: 1px solid #e0d9d0;
+      border-radius: 5px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background-color: transparent;
+    }
+
+    .pdp-section .scent-option:hover {
+      border-color: {{ section.settings.accent_color }};
+      background-color: #f5f0e8;
+    }
+
+    .pdp-section .scent-option.selected {
+      border-color: {{ section.settings.accent_color }};
+      background-color: #fff;
+    }
+
+    .pdp-section .scent-radio {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #c5bdb3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      margin-bottom: 22px;
+    }
+
+    .pdp-section .scent-option:hover .scent-radio {
+      border-color: {{ section.settings.accent_color }};
+    }
+
+    .pdp-section .scent-option.selected .scent-radio {
+      border-color: {{ section.settings.accent_color }};
+      background-color: {{ section.settings.accent_color }};
+      transform: scale(1.05);
+    }
+
+    .pdp-section .scent-radio::after {
+      content: "";
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg) scale(0);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      margin-bottom: 2px;
+    }
+
+    .pdp-section .scent-option.selected .scent-radio::after {
+      transform: rotate(-45deg) scale(1);
+    }
+
+    .pdp-section .scent-details {
+      background-color: transparent;
+    }
+
+    .pdp-section .scent-details h4 {
+      font-family:'Neue Montreal' !important;
+      font-size: 18px;
+      font-weight: 500;
+      color: #2D6775;
+      margin-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .pdp-section .scent-option:not(.selected) .scent-details h4 {
+      color: #1a1a1a;
+    }
+
+    .pdp-section .scent-details p {
+      font-size: 14px;
+      color: #7a7a7a;
+      line-height: 1.5;
+      transition: color 0.3s ease;
+    }
+
+    .pdp-section .scent-option.selected .scent-details p {
+      color: {{ section.settings.accent_color }};
+      font-weight: 400;        /* Regular */
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0.02em; /* 2% */
+    }
+
+    /* CTA Button */
+    .pdp-section .cta-button {
+      width: 100%;
+      background-color: {{ section.settings.accent_color }};
+      color: white;
+      border: none;
+      padding: 16px 16px 16px 16px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .pdp-section .cta-button.loading {
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .pdp-section .cta-button .btn-text {
+      transition: opacity 0.2s ease;
+    }
+
+    .pdp-section .cta-button.loading .btn-text {
+      opacity: 0.7;
+      display :none;
+    }
+
+    .pdp-section .cta-button .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .pdp-section .cta-button.loading .loading-spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .pdp-section .free-shipping {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;        /* Regular */
+      color: #1B1B1B;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .pdp-section .separator-horizontal {
+      width: 100%;
+      height: 1px;
+      background-color: #BAB7A6;
+      margin-bottom: 32px;
+    }
+
+    .pdp-section .shipping-icon {
+      font-size: 16px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+    }
+
+    .pdp-section .shipping-svg {
+      width: 24px;
+      height: 24px;
+      color: #1B1B1B;
+    }
+
+    /* Trust Badges */
+    .pdp-section .trust-badges {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      {% comment %} padding: 28px 0; {% endcomment %}
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 28px;
+    }
+
+    .pdp-section .trust-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding: 8px 4px;
+    }
+
+    .pdp-section .trust-badge-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .pdp-section .trust-badge p {
+      font-size: 16px;
+      font-weight:400;
+      color: #1B1B1B;
+      line-height: 24px;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    .pdp-section .icon-svg {
+      width: 28px;
+      height: 28px;
+      stroke: #555;
+      stroke-width: 1.5;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    /* Accordion */
+    .pdp-section .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: transparent;
+    }
+
+    .pdp-section .accordion-item {
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: none;
+      box-shadow: none;
+    }
+
+    .pdp-section .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px 16px 20px;
+      cursor: pointer;
+      transition: color 0.25s ease;
+      background-color: #fff;
+    }
+
+    .pdp-section .accordion-header:hover {
+      color: #1a1a1a;
+    }
+
+    .pdp-section .accordion-header h3 {
+      font-size: 16px;
+      font-weight: 500;
+      color: #1a1a1a;
+      font-family: 'Neue Montreal' !important;
+      background-color: transparent;
+    }
+
+    .pdp-section .accordion-icon {
+      width: 28px;
+      height: 28px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      border-radius: 50%;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.3s ease;
+    }
+
+    .pdp-section .accordion-header:hover .accordion-icon {
+      transform: scale(1.2) rotate(90deg);
+    }
+
+    .pdp-section .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .pdp-section .accordion-header:hover .accordion-item.active .accordion-icon,
+    .pdp-section .accordion-item.active .accordion-header:hover .accordion-icon {
+      transform: rotate(180deg) scale(1.2);
+    }
+
+    .pdp-section .accordion-icon::before,
+    .pdp-section .accordion-icon::after {
+      content: "";
+      position: absolute;
+      background-color: #000000;
+      border-radius: 2px;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.3s ease,
+                  background-color 0.3s ease;
+    }
+
+    .pdp-section .accordion-header:hover .accordion-icon::before,
+    .pdp-section .accordion-header:hover .accordion-icon::after {
+      background-color: #000000;
+    }
+
+    .pdp-section .accordion-item.active .accordion-icon::before,
+    .pdp-section .accordion-item.active .accordion-icon::after {
+      background-color: #000000;
+    }
+
+    .pdp-section .accordion-icon::before {
+      width: 14px;
+      height: 2px;
+    }
+
+    .pdp-section .accordion-icon::after {
+      width: 2px;
+      height: 14px;
+    }
+
+    .pdp-section .accordion-item.active .accordion-icon::after {
+      transform: rotate(90deg) scaleY(0);
+      opacity: 0;
+    }
+
+    .pdp-section .accordion-item.active .accordion-icon::before {
+      transform: scaleX(1.1);
+    }
+
+    .pdp-section .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.3s ease;
+      padding: 0 24px 0 20px;
+      background-color: #fff;
+      opacity: 0;
+    }
+
+    .pdp-section .accordion-item.active .accordion-content {
+      max-height: 500px;
+      padding: 0 24px 20px 20px;
+      opacity: 1;
+    }
+
+    .pdp-section .accordion-content p {
+      font-size: 16px;
+      font-weight: 400;
+      color: #1B1B1B;
+      line-height: 1.7;
+      background-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .pdp-section .accordion-content ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .pdp-section .accordion-content ul li {
+      font-size: 16px;
+      font-weight: 400;
+      color: #1B1B1B;
+      line-height: 1.7;
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+
+    .pdp-section .accordion-content ul li:last-child {
+      margin-bottom: 0;
+    }
+
+    .pdp-section .accordion-content ul li strong {
+      font-weight: 500;
+      color: #1B1B1B;
+    }
+
+    .pdp-section .accordion-content p strong {
+      font-weight: 500;
+      color: #1B1B1B;
+    }
+
+    .pdp-section .accordion-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .pdp-section .product-form {
+      margin: 0;
+      padding: 0;
+    }
+
+  .variant-title-heading {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1;
+    margin-bottom:6px;
+}
+    /* ================================
+       RESPONSIVE DESIGN
+       ================================ */
+
+    /* Large Desktop - 1200px and above */
+    @media (min-width: 1200px) {
+      .pdp-section .pdp-layout {
+        max-width: 1248px;
+        max-height: auto;
+        margin: 0 auto;
+        gap: 64px;
+      }
+
+      .pdp-section .product-title {
+        font-size: 32px;
+      }
+
+      .pdp-section .price {
+        font-size: 28px;
+        line-height:1.4;
+
+      }
+
+    }
+
+    /* Desktop - 992px to 1199px */
+    @media (max-width: 1199px) {
+      .pdp-section .pdp-layout {
+        gap: 64px;
+      }
+
+      .pdp-section .product-title {
+        font-size: 30px;
+      }
+
+      .pdp-section .product-gallery {
+         
+        overflow: hidden;
+      }
+
+      .pdp-section .product-badge {
+        top: 18px;
+        left: 18px;
+      }
+
+      .pdp-section .product-badge img {
+        max-width: 100px;
+      }
+
+      .pdp-section .thumbnail-gallery {
+        gap: 5px;
+        bottom: 10px;
+        max-width: 92%;
+      }
+
+      .pdp-section .thumbnail {
+        width: calc((100% - 25px) / 6);
+        max-width: 85px;
+        min-width: 50px;
+      }
+    }
+
+    /* Tablet Landscape / Small Desktop - 992px and below */
+    @media (max-width: 992px) {
+      .pdp-section .pdp-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        max-width: 680px;
+        margin: 0 auto;
+      }
+
+      .pdp-section .product-gallery {
+            position: static;
+    
+        max-width: 100%;
+        margin: 0 auto;
+      }
+
+      .pdp-section .product-badge {
+        top: 16px;
+        left: 16px;
+      }
+
+      .pdp-section .product-badge img {
+        max-width: 90px;
+      }
+
+      .pdp-section .main-image {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .pdp-section .thumbnail-gallery {
+        gap: 6px;
+        bottom: 12px;
+        max-width: 85%;
+      }
+
+      .pdp-section .thumbnail {
+        width: calc((100% - 30px) / 6); /* 6 items with 5 gaps of 6px */
+        max-width: 100px;
+        min-width: 65px;
+      }
+
+      .pdp-section .product-info {
+        text-align: left;
+      }
+
+      .pdp-section .product-title {
+        font-size: 28px;
+      }
+
+      .pdp-section .trust-badges {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+    }
+
+    /* Tablet Portrait - 768px and below */
+    @media (max-width: 768px) {
+      .pdp-section {
+        padding: 24px 16px;
+      }
+
+      .pdp-section .pdp-layout {
+        gap: 32px;
+        max-width: 100%;
+      }
+
+      .pdp-section .product-gallery {
+        position : relative;
+        max-width: 100%;
+        top:0;
+      }
+
+      .pdp-section .product-badge {
+        top: 14px;
+        left: 14px;
+      }
+
+      .pdp-section .product-badge img {
+        max-width: 80px;
+      }
+
+      .pdp-section .main-image {
+        border-radius: 12px;
+        max-width: 100%;
+      }
+
+      .pdp-section .thumbnail-gallery {
+        gap: 5px;
+        bottom: 10px;
+        max-width: 85%;
+      }
+
+      .pdp-section .thumbnail {
+        width: calc((100% - 25px) / 6); /* 6 items with 5 gaps of 5px */
+        max-width: 90px;
+        min-width: 60px;
+      }
+
+      .pdp-section .product-title {
+        font-size: 26px;
+      }
+
+      .pdp-section .product-subtitle {
+        font-size: 16px;
+      }
+
+      .pdp-section .price {
+        font-size: 24px;
+                line-height:1.4;
+
+      }
+      .current-price{
+        font-size:24px
+      }
+      .compare-price{
+        font-size: 20px ;
+        color: #999;
+      }
+
+      .pdp-section .rating-row {
+        gap: 6px;
+      }
+
+      .pdp-section .stars,
+      .pdp-section .rating-text {
+        font-size: 16px;
+      }
+
+      .pdp-section .whats-inside {
+        margin-bottom: 24px;
+      }
+
+      .pdp-section .whats-inside h3 {
+        font-size: 13px;
+      }
+
+      .pdp-section .whats-inside li {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .pdp-section .scent-selection {
+        margin-bottom: 24px;
+      }
+
+      .pdp-section .scent-selection h3 {
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+
+      .pdp-section .scent-option {
+        padding: 16px 12px 16px 12px;
+        gap: 14px;
+      }
+
+      .pdp-section .scent-radio {
+        width: 22px;
+        height: 22px;
+      }
+
+      .pdp-section .scent-details h4 {
+        font-size: 15px;
+      }
+
+      .pdp-section .scent-details p {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0.02em;
+      }
+
+      .pdp-section .cta-button {
+        padding: 16px 28px;
+        font-size: 14px;
+        margin-bottom :16px;  
+      }
+
+      .pdp-section .free-shipping {
+        font-size: 16px;
+        font-weight:400px;
+        margin-bottom: 32px;
+      }
+
+      .pdp-section .separator-horizontal {
+        margin-bottom: 24px;
+      }
+
+      .pdp-section .trust-badges {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 24px 0;
+      }
+
+      .pdp-section .trust-badge {
+        padding: 12px 8px;
+      }
+
+      .pdp-section .trust-badge-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .pdp-section .icon-svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .pdp-section .trust-badge p {
+        font-size: 16px;
+        font-weight:400;
+      }
+
+      .pdp-section .accordion-header {
+        padding: 18px 20px 12px 16px;
+      }
+
+      .pdp-section .accordion-header h3 {
+        font-size: 15px;
+      }
+
+      .pdp-section .accordion-content {
+        padding: 0 20px 0 16px;
+      }
+
+      .pdp-section .accordion-item.active .accordion-content {
+        padding: 0 20px 18px 16px;
+      }
+
+      .pdp-section .accordion-content p {
+        font-size: 14px;
+      }
+          .product-option input:checked+label{
+      margin-bottom:8px;
+    }
+
+    }
+
+    /* Mobile Large - 576px and below */
+    @media (max-width: 576px) {
+      .pdp-section {
+        padding: 20px 14px;
+      }
+
+      .pdp-section .pdp-layout {
+        gap: 28px;
+      }
+
+      .pdp-section .product-badge {
+        top: 12px;
+        left: 12px;
+      }
+
+      .pdp-section .product-badge img {
+        max-width: 70px;
+      }
+
+      .pdp-section .main-image {
+        border-radius: 12px;
+      }
+
+      .pdp-section .thumbnail-gallery {
+        gap: 4px;
+        bottom: 8px;
+        max-width: 85%;
+      }
+
+      .pdp-section .thumbnail {
+        width: calc((100% - 20px) / 6); /* 6 items with 5 gaps of 4px */
+        max-width: 80px;
+        min-width: 55px;
+      }
+
+      .pdp-section .product-title {
+        font-size: 24px;
+        margin-bottom: 6px;
+      }
+
+      .pdp-section .product-subtitle {
+        font-size: 16px;
+        margin-bottom: 14px;
+      }
+
+      .pdp-section .rating-row {
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .pdp-section .price {
+        font-size: 22px;
+        margin-bottom: 20px;
+                line-height:1.4;
+
+      }
+
+      .pdp-section .scent-option {
+        padding: 14px 16px;
+        gap: 12px;
+      }
+
+      .pdp-section .scent-radio {
+        width: 20px;
+        height: 20px;
+      }
+
+      .pdp-section .scent-radio::after {
+        width: 8px;
+        height: 5px;
+      }
+
+      .pdp-section .scent-details h4 {
+        font-size: 14px;
+      }
+
+      .pdp-section .scent-details p {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0.02em;
+      }
+
+      .pdp-section .trust-badges {
+        gap: 16px;
+        padding: 22px 0;
+      }
+
+      .pdp-section .trust-badge {
+        padding: 10px 6px;
+      }
+
+      .pdp-section .trust-badge-icon {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 8px;
+      }
+
+      .pdp-section .icon-svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .pdp-section .accordion {
+        gap: 12px;
+      }
+
+      .pdp-section .accordion-icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .pdp-section .accordion-icon::before {
+        width: 12px;
+      }
+
+      .pdp-section .accordion-icon::after {
+        height: 12px;
+      }
+    }
+
+    /* Mobile Small - 480px and below */
+    @media (max-width: 480px) {
+      .pdp-section {
+        padding: 16px 12px;
+      }
+
+      .pdp-section .pdp-layout {
+        gap: 20px;
+      }
+
+      .pdp-section .product-badge {
+        top: 10px;
+        left: 10px;
+      }
+
+      .pdp-section .product-badge img {
+        max-width: 60px;
+      }
+
+      .pdp-section .main-image {
+        border-radius: 12px;
+      }
+
+      .pdp-section .thumbnail-gallery {
+        gap: 3px;
+        bottom: 6px;
+        max-width: 88%;
+      }
+
+      .pdp-section .thumbnail {
+        width: calc((100% - 15px) / 6); /* 6 items with 5 gaps of 3px */
+        max-width: 70px;
+        min-width: 48px;
+      }
+
+      .pdp-section .product-title {
+        font-size: 28px;
+        font-weight:600;
+        letter-spacing: -0.3px;
+      }
+
+      .pdp-section .product-subtitle {
+        font-size: 16px;
+        font-weight:400;
+        letter-spacing:2%;
+        margin-bottom: 8px;
+      }
+
+      .pdp-section .price {
+        font-size: 24px;
+        font-weight:400;
+        margin-bottom: 16px;
+        letter-spacing:2%;
+        color:1B1B1B;
+        line-height:1.4;
+      }
+
+      .pdp-section .whats-inside {
+        margin-bottom: 24px;
+      }
+
+      .pdp-section .whats-inside h3 {
+        font-size: 16px;
+        font-weight: 500;        /* Medium */
+        margin-bottom: 12px;
+        line-height: 24px;
+        letter-spacing: 0.02em; /* 2% */
+      }
+
+      .pdp-section .whats-inside li {
+        font-size: 16px;
+        padding-left: 14px;
+        font-weight:400;
+        margin-bottom: 6px;
+        letter-spacing:2%;
+        line-height: 24px;
+      }
+
+      .pdp-section .scent-selection {
+        margin-bottom: 16px;
+      }
+
+      .pdp-section .scent-selection h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .pdp-section .scent-option {
+        padding: 12px 14px;
+        margin-bottom: 12px;
+      }
+
+      .pdp-section .cta-button {
+        font-weight: 500;        /* Medium */
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.02em; /* 2% */
+        text-align: center;     /* Horizontal alignment */
+      }
+
+      .pdp-section .free-shipping {
+        font-size: 16px;
+        margin-bottom: 32px;
+        font-weight:400;
+        gap: 6px;
+      }
+
+      .pdp-section .separator-horizontal {
+        margin-bottom: 20px;
+      }
+
+      .pdp-section .shipping-icon {
+        font-size: 14px;
+      }
+
+      .pdp-section .trust-badges {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 20px 0;
+        margin-bottom: 24px;
+      }
+
+      .pdp-section .trust-badge {
+          display: flex;
+          flex-direction: column;     /* Vertical flow */
+          height: auto;               /* Hug */
+          border-radius: 8px;
+
+          padding: 0 16px 16px 16px;  /* Right, Bottom, Left */
+          gap: 12px;
+      }
+
+      .pdp-section .trust-badge-icon {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 6px;
+      }
+
+      .pdp-section .icon-svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .pdp-section .trust-badge p {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        border-radius: 8px;
+        padding: 0 16px 16px;
+        gap: 12px;
+        font-size:16px;
+        font-weight:400;
+      }
+
+      .pdp-section .accordion-header {
+        padding: 16px 18px 12px 14px;
+      }
+
+      .pdp-section .accordion-header h3 {
+        font-size: 14px;
+      }
+
+      .pdp-section .accordion-content {
+        padding: 0 18px 0 14px;
+      }
+
+      .pdp-section .accordion-item.active .accordion-content {
+        padding: 0 18px 16px 14px;
+      }
+
+      .pdp-section .accordion-content p {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .variant-title-heading {
+                font-size: 16px;
+                font-weight:500;
+                margin-bottom:6px;
+
+      }
+      .variant-subtext {
+                        font-weight:400;
+
+      }
+
+
+      
+    }
+
+    /* Extra Small Mobile - 360px and below */
+    @media (max-width: 360px) {
+      .pdp-section {
+        padding: 14px 10px;
+      }
+
+      .pdp-section .product-badge {
+        top: 8px;
+        left: 8px;
+      }
+
+      .pdp-section .product-badge img {
+        max-width: 50px;
+      }
+
+      .pdp-section .product-title {
+        font-size: 20px;
+      }
+
+      .pdp-section .product-subtitle {
+        font-size: 10px;
+      }
+
+      .pdp-section .price {
+        font-size: 18px;
+        line-height:1.4;
+      }
+
+      .pdp-section .thumbnail-gallery {
+        gap: 2px;
+        bottom: 5px;
+        max-width: 90%;
+      }
+
+      .pdp-section .thumbnail {
+        width: calc((100% - 10px) / 6); /* 6 items with 5 gaps of 2px */
+        max-width: 65px;
+        min-width: 42px;
+      }
+
+      .pdp-section .scent-option {
+        padding: 10px 12px;
+      }
+
+      .pdp-section .scent-details h4 {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.02em;
+      }
+
+      .pdp-section .scent-details p {
+        font-size: 11px;
+      }
+
+      .pdp-section .cta-button {
+        padding: 12px 18px;
+        font-size: 12px;
+      }
+
+      .pdp-section .trust-badges {
+        gap: 10px;
+        padding: 18px 0;
+      }
+
+      .pdp-section .trust-badge-icon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .pdp-section .icon-svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .pdp-section .trust-badge p {
+        font-size: 16px;
+        font-weight:400;
+      }
+
+      .pdp-section .accordion-header h3 {
+        font-size: 13px;
+      }
+
+      .pdp-section .accordion-content p {
+        font-size: 12px;
+      }
+    }
+</style>
+
+<script>
+  (function () {
+    const sectionId = '{{ section.id }}';
+    const container = document.querySelector('[data-section-id="{{ section.id }}"]');
+
+    if (!container) return;
+
+    // Show badge after DOM is ready to prevent flash of unstyled content
+    function showBadges() {
+      const badges = container.querySelectorAll('.product-badge');
+      badges.forEach(badge => {
+        badge.classList.add('loaded');
+      });
+    }
+
+    // Try to show badges as soon as possible
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', showBadges);
+    } else {
+      // DOM already loaded
+      showBadges();
+    }
+
+    // Fallback: ensure badges show after a short delay regardless
+    setTimeout(showBadges, 100);
+
+    // Image Gallery - Switch main image on thumbnail click
+    const mainImage = container.querySelector('#mainProductImage-{{ section.id }}');
+    const thumbnails = container.querySelectorAll('.thumbnail');
+
+    thumbnails.forEach((thumbnail, index) => {
+      thumbnail.addEventListener('click', function () {
+        const imageUrl = this.dataset.imageUrl;
+
+        if (mainImage && imageUrl) {
+          mainImage.src = imageUrl;
+        }
+
+        thumbnails.forEach((thumb, i) => {
+          thumb.classList.toggle('active', i === index);
+        });
+      });
+    });
+
+    // Scent Selection
+    const scentOptions = container.querySelectorAll('.scent-option');
+    const variantInput = container.querySelector('#selectedVariant-{{ section.id }}');
+
+    scentOptions.forEach((option) => {
+      option.addEventListener('click', function () {
+        const clickedOption = this;
+        scentOptions.forEach((opt) => opt.classList.remove('selected'));
+        clickedOption.classList.add('selected');
+
+        // Update variant ID if present
+        const variantId = clickedOption.getAttribute('data-variant-id');
+        if (variantInput && variantId) {
+          variantInput.value = variantId;
+        }
+
+        // Update thumbnails if variant has thumbnail images
+        const currentThumbnails = container.querySelectorAll('.thumbnail');
+        currentThumbnails.forEach((thumbnail, index) => {
+          const thumbNum = index + 1;
+          // Use getAttribute to get hyphenated data attributes
+          const thumbLargeUrl = clickedOption.getAttribute('data-thumb-' + thumbNum);
+          const thumbSmallUrl = clickedOption.getAttribute('data-thumb-' + thumbNum + '-small');
+
+          if (thumbLargeUrl && thumbSmallUrl) {
+            // Update the thumbnail's data-image-url for when it's clicked
+            thumbnail.setAttribute('data-image-url', thumbLargeUrl);
+
+            // Update the thumbnail image src
+            const thumbImg = thumbnail.querySelector('img');
+            if (thumbImg) {
+              thumbImg.src = thumbSmallUrl;
+            }
+          }
+        });
+
+        // Reset active state to first thumbnail and show its image as main image
+        currentThumbnails.forEach((thumb, i) => {
+          if (i === 0) {
+            thumb.classList.add('active');
+            // Update main image to first thumbnail of selected scent
+            const firstThumbUrl = clickedOption.getAttribute('data-thumb-1');
+            if (mainImage && firstThumbUrl) {
+              mainImage.src = firstThumbUrl;
+            }
+          } else {
+            thumb.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // Accordion - independent toggle (multiple can be open)
+    const accordionHeaders = container.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach((header) => {
+      header.addEventListener('click', function () {
+        const item = this.parentElement;
+        item.classList.toggle('active');
+      });
+    });
+
+    // Form submission with loading state
+    const productForm = container.querySelector('#productForm-{{ section.id }}');
+    if (productForm) {
+      productForm.addEventListener('submit', function (e) {
+        const submitButton = this.querySelector('.cta-button');
+        if (submitButton) {
+          submitButton.classList.add('loading');
+        }
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Main pdp section",
+  "tag": "section",
+  "class": "pdp-main-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "image_picker",
+      "id": "star_icon",
+      "label": "Rating Stars Image",
+      "info": "Upload your star rating image (recommended: 100x20px PNG or SVG showing all stars)"
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Rating Value",
+      "default": "4.4"
+    },
+    {
+      "type": "image_picker",
+      "id": "review_platform_image",
+      "label": "Review Platform Image",
+      "info": "Upload a single image for the review platform (e.g., Trustpilot logo with text)"
+    },
+    {
+      "type": "range",
+      "id": "review_platform_width",
+      "label": "Review Platform Image Width",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "review_platform_height",
+      "label": "Review Platform Image Height",
+      "min": 10,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "review_platform_padding",
+      "label": "Review Platform Image Padding",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "What's Inside Section"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "Button Text",
+      "default": "Claim Your Luxury Laundry Kit"
+    },
+    {
+      "type": "text",
+      "id": "shipping_text",
+      "label": "Shipping Text",
+      "default": "Free shipping on orders over £30"
+    },
+    {
+      "type": "image_picker",
+      "id": "shipping_icon",
+      "label": "Shipping Icon",
+      "info": "Upload a custom shipping icon (recommended: 36x36px PNG or SVG)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5ebe0"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#4a7c6f"
+    },
+    {
+      "type": "color",
+      "id": "accent_color_hover",
+      "label": "Accent Color (Hover)",
+      "default": "#3d6b5f"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal Padding",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "scent_option",
+      "name": "Scent Option",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Scent Product"
+        },
+        {
+          "type": "text",
+          "id": "scent_name",
+          "label": "Scent Name",
+          "default": "Elegant Blossom"
+        },
+        {
+          "type": "text",
+          "id": "scent_description",
+          "label": "Scent Description",
+          "default": "Fresh floral bouquet with peach, orange blossom & vanilla"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant ID",
+          "info": "The Shopify variant ID associated with this scent"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "badge_icon",
+          "label": "Badge Icon",
+          "info": "Upload a custom icon (recommended: 56x56px PNG or SVG)"
+        },
+        {
+          "type": "text",
+          "id": "badge_text_line1",
+          "label": "Text Line 1",
+          "default": "100%"
+        },
+        {
+          "type": "text",
+          "id": "badge_text_line2",
+          "label": "Text Line 2",
+          "default": "Plant Based"
+        }
+      ]
+    },
+    {
+      "type": "accordion_item",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "accordion_title",
+          "label": "Title",
+          "default": "About the Product"
+        },
+        {
+          "type": "richtext",
+          "id": "accordion_content",
+          "label": "Content",
+          "default": "<p>A luxurious, plant-based laundry kit designed to cleanse, condition, and infuse your fabrics with mood-boosting fragrances.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main pdp section",
+      "blocks": [
+        {
+          "type": "trust_badge",
+          "settings": {
+            "badge_text_line1": "100%",
+            "badge_text_line2": "Plant Based"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "badge_text_line1": "Vegan &",
+            "badge_text_line2": "Cruelty-Free"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "badge_text_line1": "Sensitive Skin",
+            "badge_text_line2": "Approved"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "badge_text_line1": "Made in",
+            "badge_text_line2": "Yorkshire"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "accordion_title": "How to Use",
+            "accordion_content": "<ul><li>Pick your Laundry Detergent Sheet and Fabric Care Sheet.</li><li>Place directly into the drum with clothing.</li><li>Add a Fragrance Booster for a personal mood lift.</li><li>Wash as normal and enjoy clean, cared-for fabrics that love your skin.</li></ul>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "accordion_title": "Premium Plant-Based Ingredients",
+            "accordion_content": "<ul><li><strong>Saponins from Soap Nuts</strong> - Natural surfactants from the Sapindus tree for gentle cleaning</li><li><strong>Organic Coconut Oil Derivatives</strong> - Ultra-mild cleansing agents that protect fabric integrity</li><li><strong>Coco-Betaine</strong> - Gentle amphoteric surfactant derived from coconut oil</li><li><strong>Decyl Glucoside</strong> - Non-ionic surfactant from corn glucose and coconut oil</li><li><strong>Sodium Cocoyl Glutamate</strong> - Mild anionic surfactant from coconut oil and fermented sugar</li><li><strong>Coco-Glucoside</strong> - Plant-derived non-ionic surfactant for superior cleaning</li></ul>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "accordion_title": "Mood-lifting Fragrances",
+            "accordion_content": "<ul><li><strong>Elegant Blossom</strong> - A sophisticated symphony of sun-kissed peach, vibrant orange, and warm vanilla that transforms your fabrics into a garden of luxury.</li><li><strong>Gentle Embrace</strong> - An enchanting blend of crisp apple, romantic rose, and grounding sandalwood that wraps your garments in pure comfort.</li></ul>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "accordion_title": "What Makes Simple Living Eco Different?",
+            "accordion_content": "<p>Our fabric care sheets work like premium skincare for your textiles, nourishing fibres with botanical extracts while maintaining their natural softness and longevity. Each sheet is infused with carefully selected ingredients that respect both your fabrics and the environment.</p>"
+          }
+        },
+        {
+          "type": "accordion_item",
+          "settings": {
+            "accordion_title": "Delivery & Returns",
+            "accordion_content": "<p><strong>FREE SHIPPING INCLUDED</strong> - No additional costs, delivered straight to your door.</p><p>To know more, check our Shipping & Returns policy</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  // Function to initialize a swiper with thumbnails
+  function initSwiper(mainClass, thumbClass) {
+    const swiperThumbs = new Swiper(thumbClass, {
+      spaceBetween: 10,
+      slidesPerView: 6,
+      freeMode: true,
+      watchSlidesProgress: true,
+      breakpoints: {
+        640: {
+          slidesPerView: 6,
+        },
+      },
+    });
+
+    const swiperMain = new Swiper(mainClass, {
+      spaceBetween: 10,
+      navigation: {
+        nextEl: mainClass + ' .swiper-button-next',
+        prevEl: mainClass + ' .swiper-button-prev',
+      },
+      pagination: {
+        el: mainClass + ' .swiper-pagination',
+        clickable: true,
+      },
+      thumbs: {
+        swiper: swiperThumbs,
+      },
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      loop: true,
+    });
+  }
+
+  // Initialize all sliders
+  initSwiper('.swiper-main-1', '.swiper-thumbs-1');
+  initSwiper('.swiper-main-2', '.swiper-thumbs-2');
+
+  document.addEventListener('change', function (e) {
+    if (e.target.matches('.choose-product-variant')) {
+      document.getElementById('selectedProductVariant').value = e.target.value;
+
+      // Update price display
+      const priceContainer = document.getElementById('productPrice');
+      const currentPriceEl = priceContainer.querySelector('.current-price');
+      let comparePriceEl = priceContainer.querySelector('.compare-price');
+
+      const newPrice = e.target.dataset.price;
+      const newComparePrice = e.target.dataset.comparePrice;
+      const hasCompare = e.target.dataset.hasCompare === 'true';
+
+      // Update current price
+      currentPriceEl.textContent = newPrice;
+
+      // Handle compare price
+      if (hasCompare && newComparePrice) {
+        if (comparePriceEl) {
+          comparePriceEl.textContent = newComparePrice;
+        } else {
+          // Create compare price element if it doesn't exist
+          comparePriceEl = document.createElement('del');
+          comparePriceEl.className = 'compare-price';
+          comparePriceEl.textContent = newComparePrice;
+          priceContainer.appendChild(comparePriceEl);
+        }
+      } else if (comparePriceEl) {
+        // Remove compare price if variant doesn't have one
+        comparePriceEl.remove();
+      }
+    }
+  });
+</script>

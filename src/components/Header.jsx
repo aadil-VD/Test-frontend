@@ -23,6 +23,12 @@ function Header() {
           >
             About
           </Link>
+          <Link
+            to="/thoughts"
+            className={location.pathname === '/thoughts' ? 'active' : ''}
+          >
+            Thoughts
+          </Link>
         </nav>
       </div>
     </header>
