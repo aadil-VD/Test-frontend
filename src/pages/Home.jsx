@@ -4,7 +4,7 @@ function Home() {
   return (
     <div className="home">
       <section className="hero">
-        <h1>Come to MyApp</h1>
+        <h1>Come to MyApp Rs.1999</h1>
         <p>A modern web application built with React and Vite</p>
         <div className="hero-buttons">
           <button className="btn btn-primary btn-lg">Get Started</button>
