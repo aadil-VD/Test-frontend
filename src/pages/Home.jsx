@@ -1,15 +1,20 @@
 import './Home.css'
+import HeroScene from '../components/HeroScene'
+import RaceGame from '../components/RaceGame'
 
 function Home() {
   return (
     <div className="home">
       <section className="hero">
-        <h1>Come to MyApp Rs.7999</h1>
-        <p>A modern web application built with React and Vite</p>
-        <div className="hero-buttons">
+        <HeroScene />
+        <div className="hero-content">
+          <h1>Come to MyApp Rs.7999</h1>
+          <p>A modern web application built with React and Vite</p>
+          <div className="hero-buttons">
           <button className="btn btn-primary btn-lg">Get Started</button>
           <button className="btn btn-outline-light btn-lg">Watch Demo</button>
           <button className="btn btn-secondary btn-lg">Learn More</button>
+          </div>
         </div>
       </section>
 
@@ -35,6 +40,12 @@ function Home() {
             <button className="btn btn-feature">Customize</button>
           </div>
         </div>
+      </section>
+
+      <section className="race-section">
+        <h2>Explore the Open World</h2>
+        <p className="race-subtitle">Free-roam the city, cruise the streets, and collect the coins.</p>
+        <RaceGame />
       </section>
 
       <section className="cta-section">

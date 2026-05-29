@@ -1,0 +1,170 @@
+.race-section {
+  padding: 5rem 2rem;
+  background: #0f0c29;
+  text-align: center;
+}
+
+.race-section > h2 {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.race-section > p.race-subtitle {
+  color: #b8b8d0;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.race-game {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.35);
+  background: #1a1033;
+}
+
+.race-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.race-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* HUD shown while playing */
+.race-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem 1.5rem;
+  pointer-events: none;
+}
+
+.race-gauge,
+.race-dist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  background: rgba(15, 12, 41, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.5rem 0.9rem;
+  backdrop-filter: blur(3px);
+}
+
+.race-kmh {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(102, 126, 234, 0.8);
+}
+
+.race-score {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #f5c518;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.race-kmh-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 0.2rem;
+}
+
+.race-hint {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(15, 12, 41, 0.45);
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+}
+
+.race-minimap {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .race-minimap {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+/* Start / game-over overlays */
+.race-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(15, 12, 41, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.race-overlay h3 {
+  font-size: 2.2rem;
+  color: #fff;
+  margin: 0;
+}
+
+.race-overlay p {
+  color: #cfcfe8;
+  margin: 0;
+  max-width: 28rem;
+}
+
+.race-final {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f5c518 !important;
+}
+
+.race-best {
+  font-size: 1rem;
+  color: #b8b8d0 !important;
+}
+
+.race-controls {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 600px) {
+  .race-hint,
+  .race-controls {
+    display: none;
+  }
+  .race-overlay h3 {
+    font-size: 1.6rem;
+  }
+}
